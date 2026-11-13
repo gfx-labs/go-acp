@@ -38,3 +38,9 @@ jobs:
       - uses: golangci/golangci-lint-action@v8
         with:
           version: v2.15.0
+      - name: generator lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.15.0
+          working-directory: internal/acpgen
+          args: --config ../../.golangci.yml
