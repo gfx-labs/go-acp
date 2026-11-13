@@ -2,8 +2,8 @@
 // newline-delimited messages, with the protocol's types generated from the
 // schema files in schema/.
 //
-// The *_gen.go files come from tools/acpgen. Regenerate them with
-// "go generate ./pkg/acp" after changing the schema files or the generator.
+// The *_gen.go files come from internal/acpgen. Regenerate them with
+// "go generate ." after changing the schema files or the generator.
 package acp
 
-//go:generate go run -C ../../tools/acpgen . -schema ../../pkg/acp/schema -out ../../pkg/acp
+//go:generate go run -C internal/acpgen . -schema ../../schema -out ../..

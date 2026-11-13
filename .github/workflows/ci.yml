@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
+jobs:
+  go:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - run: CGO_ENABLED=0 go build ./...
+      - run: go vet ./...
+      # *_gen.go must be what internal/acpgen writes for the schema files.
+      - name: generated code is current
+        run: |
+          go generate ./...
+          git diff --exit-code
+          test -z "$(git status --porcelain)"
+      - run: go test -race ./...
+      # internal/acpgen is its own module, so ./... above does not reach it.
+      - name: generator tests
+        working-directory: internal/acpgen
+        run: |
+          go vet ./...
+          go test ./...
+      - uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.15.0

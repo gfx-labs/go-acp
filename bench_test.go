@@ -10,12 +10,12 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/gfx-labs/towa/pkg/acp"
+	acp "github.com/gfx-labs/go-acp"
 )
 
 // The benchmarks go through a connection, so they count everything a message
 // costs: the frame, the envelope, the typed params and the handler dispatch.
-// Run with: go test ./pkg/acp -run '^$' -bench . -benchmem
+// Run with: go test . -run '^$' -bench . -benchmem
 
 // benchText is the text of a streamed chunk: a few lines of source code.
 const benchText = "func (c *Connection) Done() <-chan struct{} { return c.done }\n\n// Serve handles messages until the reader ends.\n"

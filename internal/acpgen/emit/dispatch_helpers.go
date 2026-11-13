@@ -1,10 +1,10 @@
 // This file is modified from cmd/generate in github.com/coder/acp-go-sdk
-// (commit 492745b, Apache-2.0). tools/acpgen/README.md lists the changes.
+// (commit 492745b, Apache-2.0). internal/acpgen/README.md lists the changes.
 
 package emit
 
 import (
-	"github.com/gfx-labs/towa/tools/acpgen/ir"
+	"github.com/gfx-labs/go-acp/internal/acpgen/ir"
 )
 
 // invInvalid: return invalid params with compact json-like message

@@ -1,5 +1,5 @@
 // This file is modified from cmd/generate in github.com/coder/acp-go-sdk
-// (commit 492745b, Apache-2.0). tools/acpgen/README.md lists the changes.
+// (commit 492745b, Apache-2.0). internal/acpgen/README.md lists the changes.
 
 package main
 
@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gfx-labs/towa/tools/acpgen/emit"
-	"github.com/gfx-labs/towa/tools/acpgen/load"
+	"github.com/gfx-labs/go-acp/internal/acpgen/emit"
+	"github.com/gfx-labs/go-acp/internal/acpgen/load"
 )
 
 func main() {

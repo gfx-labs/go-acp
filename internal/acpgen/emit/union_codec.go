@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gfx-labs/towa/tools/acpgen/ir"
-	"github.com/gfx-labs/towa/tools/acpgen/load"
-	"github.com/gfx-labs/towa/tools/acpgen/util"
+	"github.com/gfx-labs/go-acp/internal/acpgen/ir"
+	"github.com/gfx-labs/go-acp/internal/acpgen/load"
+	"github.com/gfx-labs/go-acp/internal/acpgen/util"
 )
 
 // The union codec is written for encoding/json/v2. Upstream wrote it for v1:
 // it decoded every union into a map of raw members to find the variant, and
 // encoded a variant by marshalling it, unmarshalling the bytes into a
 // map[string]any, setting the discriminator and marshalling the map.
-// tools/acpgen/README.md says what that changed on the wire.
+// internal/acpgen/README.md says what that changed on the wire.
 
 const (
 	jsonPkg     = "encoding/json/v2"

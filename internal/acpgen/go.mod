@@ -1,4 +1,4 @@
-module github.com/gfx-labs/towa/tools/acpgen
+module github.com/gfx-labs/go-acp/internal/acpgen
 
 go 1.27.3
 

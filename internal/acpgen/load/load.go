@@ -1,5 +1,5 @@
 // This file is modified from cmd/generate in github.com/coder/acp-go-sdk
-// (commit 492745b, Apache-2.0). tools/acpgen/README.md lists the changes.
+// (commit 492745b, Apache-2.0). internal/acpgen/README.md lists the changes.
 
 // Package load provides utilities to read the ACP JSON schema and
 // accompanying metadata into minimal structures used by the generator.

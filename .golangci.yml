@@ -1,0 +1,31 @@
+version: "2"
+
+linters:
+  default: standard
+  enable:
+    - depguard
+    - errorlint
+    - gochecksumtype
+    - gocritic
+    - misspell
+    - revive
+    - unconvert
+  settings:
+    gochecksumtype:
+      default-signifies-exhaustive: true
+    depguard:
+      rules:
+        json:
+          deny:
+            - pkg: "encoding/json$"
+              desc: use encoding/json/v2 and encoding/json/jsontext
+    revive:
+      enable-default-rules: true
+      rules:
+        - name: exported
+        - name: package-comments
+
+formatters:
+  enable:
+    - gofumpt
+    - goimports

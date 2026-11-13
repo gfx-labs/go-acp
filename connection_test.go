@@ -12,8 +12,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/gfx-labs/towa/pkg/acp"
-	"github.com/gfx-labs/towa/pkg/acp/acptest"
+	acp "github.com/gfx-labs/go-acp"
+	"github.com/gfx-labs/go-acp/acptest"
 )
 
 // The tests run in synctest bubbles so that a message that never arrives

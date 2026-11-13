@@ -1,5 +1,5 @@
 // This file is modified from cmd/generate in github.com/coder/acp-go-sdk
-// (commit 492745b, Apache-2.0). tools/acpgen/README.md lists the changes.
+// (commit 492745b, Apache-2.0). internal/acpgen/README.md lists the changes.
 
 // Package ir defines the intermediate representation used by the Go
 // code generator. It organizes methods, bindings, and schema-derived
@@ -10,8 +10,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/gfx-labs/towa/tools/acpgen/load"
-	"github.com/gfx-labs/towa/tools/acpgen/util"
+	"github.com/gfx-labs/go-acp/internal/acpgen/load"
+	"github.com/gfx-labs/go-acp/internal/acpgen/util"
 )
 
 // MethodBinding describes which interface a method belongs to on each side.

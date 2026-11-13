@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/gfx-labs/towa/pkg/acp"
+	acp "github.com/gfx-labs/go-acp"
 )
 
 // session/new must answer before a notification names its new session. The
