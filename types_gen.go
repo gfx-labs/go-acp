@@ -1365,8 +1365,17 @@ type CreateElicitationForm struct {
 	// A human-readable message describing what input is needed.
 	Message string `json:"message"`
 	Mode    string `json:"mode"`
+	// The request this elicitation is tied to.
+	RequestId *RequestId `json:"requestId,omitzero"`
 	// A JSON Schema describing the form fields to present to the user.
 	RequestedSchema ElicitationSchema `json:"requestedSchema"`
+	// The session this elicitation is tied to.
+	SessionId SessionId `json:"sessionId,omitzero"`
+	// Optional tool call within the session.
+	//
+	// Optional. Omitted and 'null' are equivalent and mean the elicitation is scoped to the
+	// session without a specific tool call.
+	ToolCallId *ToolCallId `json:"toolCallId,omitzero"`
 }
 
 // URL-based elicitation where the client directs the user to a URL.
@@ -1384,6 +1393,15 @@ type CreateElicitationUrl struct {
 	// A human-readable message describing what input is needed.
 	Message string `json:"message"`
 	Mode    string `json:"mode"`
+	// The request this elicitation is tied to.
+	RequestId *RequestId `json:"requestId,omitzero"`
+	// The session this elicitation is tied to.
+	SessionId SessionId `json:"sessionId,omitzero"`
+	// Optional tool call within the session.
+	//
+	// Optional. Omitted and 'null' are equivalent and mean the elicitation is scoped to the
+	// session without a specific tool call.
+	ToolCallId *ToolCallId `json:"toolCallId,omitzero"`
 	// The URL to direct the user to.
 	Url string `json:"url"`
 }
@@ -1414,6 +1432,15 @@ type CreateElicitationOther struct {
 	// extensions. Unknown values that do not begin with '_' are reserved for
 	// future ACP variants.
 	Mode string `json:"mode"`
+	// The request this elicitation is tied to.
+	RequestId *RequestId `json:"requestId,omitzero"`
+	// The session this elicitation is tied to.
+	SessionId SessionId `json:"sessionId,omitzero"`
+	// Optional tool call within the session.
+	//
+	// Optional. Omitted and 'null' are equivalent and mean the elicitation is scoped to the
+	// session without a specific tool call.
+	ToolCallId *ToolCallId `json:"toolCallId,omitzero"`
 }
 
 type CreateElicitationRequest struct {
@@ -7575,8 +7602,13 @@ type StateUpdateIdle struct {
 	// The _meta property is reserved by ACP for additional metadata.
 	// Implementations MUST NOT make assumptions about values at these keys.
 	// Optional. Omitted and 'null' mean no metadata for this state snapshot.
-	Meta  map[string]any `json:"_meta,omitempty"`
-	State string         `json:"state"`
+	Meta map[string]any `json:"_meta,omitempty"`
+	// The failure, as a JSON-RPC error object.
+	//
+	// Optional. Omitted or 'null' both mean the agent is not reporting failure details.
+	// Agents SHOULD include it.
+	Error *Error `json:"error,omitzero"`
+	State string `json:"state"`
 	// Why foreground work stopped. The value selects one of this type's variants, which may add fields of their own.
 	//
 	// Optional. Omitted or 'null' both mean the agent is not reporting a stop reason; a malformed value is treated the same way.

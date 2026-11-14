@@ -1104,6 +1104,27 @@ func emitUnion(f *File, name string, schema *load.Schema, parentDef *load.Defini
 				for pk, pDef := range v.Properties {
 					mergedProps[pk] = pDef
 				}
+				// A variant that reuses a shape whose own anyOf picks among
+				// objects (the scope of an elicitation: a session or a
+				// request) takes their members as optional fields, since
+				// which one applies is the caller's to choose. A member that
+				// could not be left out as it is becomes a pointer.
+				scoped := map[string]bool{}
+				for _, alt := range v.AnyOf {
+					def := expandAllOf(schema, alt)
+					if def != nil && def.Ref != "" && strings.HasPrefix(def.Ref, "#/$defs/") {
+						def = expandAllOf(schema, schema.Defs[def.Ref[len("#/$defs/"):]])
+					}
+					if def == nil {
+						continue
+					}
+					for pk, pDef := range def.Properties {
+						if _, ok := mergedProps[pk]; !ok {
+							mergedProps[pk] = pDef
+							scoped[pk] = true
+						}
+					}
+				}
 				pkeys := make([]string, 0, len(mergedProps))
 				for pk := range mergedProps {
 					pkeys = append(pkeys, pk)
@@ -1121,6 +1142,9 @@ func emitUnion(f *File, name string, schema *load.Schema, parentDef *load.Defini
 					tag := pk
 					ptype := jenTypeForOptional(pDef)
 					if _, ok := req[pk]; !ok {
+						if scoped[pk] && omitOption(schema, ptype) == "" {
+							ptype = Op("*").Add(ptype)
+						}
 						tag = pk + omitOption(schema, ptype)
 					}
 					st = append(st, ID(field).Add(ptype).Tag(map[string]string{"json": tag}))
