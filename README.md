@@ -37,8 +37,13 @@ generator in [coder/acp-go-sdk](https://github.com/coder/acp-go-sdk)
 schema or the generator:
 
 ```sh
-go generate .
+go generate ./...
 ```
+
+`v2/` (package `github.com/gfx-labs/go-acp/v2`) is the same library
+generated from the draft ACP v2 schema in `v2/schema/`. v2 is a draft
+upstream, so its API can change in any release. See
+`docs/notes/2026-11-14-v2-draft.md`.
 
 CI fails when the committed files differ from what the generator writes.
 

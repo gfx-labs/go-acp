@@ -1191,6 +1191,7 @@ func emitUnion(f *File, name string, schema *load.Schema, parentDef *load.Defini
 			constPairs:        consts,
 			isNull:            isNull,
 			description:       v.Description,
+			metaAnnotations:   hasMetaAndAnnotations(schema, v, ref),
 		})
 		if exactlyOne {
 			emitted[name] = append(emitted[name], unionVariant{
@@ -1231,4 +1232,18 @@ func emitUnion(f *File, name string, schema *load.Schema, parentDef *load.Defini
 		})
 		f.Line()
 	}
+}
+
+// hasMetaAndAnnotations reports whether a union variant, inline or by $ref,
+// has both _meta and annotations properties.
+func hasMetaAndAnnotations(schema *load.Schema, v *load.Definition, ref string) bool {
+	if ref != "" && strings.HasPrefix(ref, "#/$defs/") {
+		v = expandAllOf(schema, schema.Defs[ref[len("#/$defs/"):]])
+	}
+	if v == nil {
+		return false
+	}
+	_, meta := v.Properties["_meta"]
+	_, ann := v.Properties["annotations"]
+	return meta && ann
 }

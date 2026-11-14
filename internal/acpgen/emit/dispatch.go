@@ -17,6 +17,11 @@ import (
 // WriteDispatchJen emits agent_gen.go and client_gen.go with handlers and wrappers.
 func WriteDispatchJen(outDir string, schema *load.Schema, meta *load.Meta) error {
 	groups := ir.BuildMethodGroups(schema, meta)
+	// The prompt wrapper sends session/cancel; its type name differs by protocol version.
+	cancelNotif := "CancelNotification"
+	if mi := groups["agent|session/cancel"]; mi != nil && mi.Notif != "" {
+		cancelNotif = mi.Notif
+	}
 
 	// Agent handler + outbound wrappers
 	fAgent := NewFile("acp")
@@ -226,7 +231,7 @@ func WriteDispatchJen(outDir string, schema *load.Schema, meta *load.Meta) error
 							List(ID("resp"), ID("err")).Op(":=").Id("SendRequest").Types(ID(respName)).Call(ID("ctx"), ID("c").Dot("conn"), ID(constName), Op("&").Id("params")),
 							If(ID("err").Op("!=").Nil()).Block(
 								If(ID("ctx").Dot("Err").Call().Op("!=").Nil()).Block(
-									ID("_ ").Op("=").Id("c").Dot("Cancel").Call(Qual("context", "Background").Call(), ID("CancelNotification").Values(Dict{ID("SessionId"): ID("params").Dot("SessionId")})),
+									ID("_ ").Op("=").Id("c").Dot("Cancel").Call(Qual("context", "Background").Call(), ID(cancelNotif).Values(Dict{ID("SessionId"): ID("params").Dot("SessionId")})),
 								),
 							),
 							Return(ID("resp"), ID("err")),

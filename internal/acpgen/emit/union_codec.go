@@ -39,6 +39,8 @@ type variantInfo struct {
 	constPairs        [][2]string
 	isNull            bool
 	description       string
+	// metaAnnotations is set when the variant has both _meta and annotations.
+	metaAnnotations bool
 }
 
 // jDecodeVariant emits: decode b into a new variant value and keep it.
@@ -164,7 +166,7 @@ func emitUnionMarshal(f *File, name string, variants []variantInfo) {
 					for _, kv := range vi.constPairs {
 						gg.Id("v").Dot(util.ToExportedField(kv[0])).Op("=").Lit(kv[1])
 					}
-					if name == "ContentBlock" {
+					if name == "ContentBlock" && vi.metaAnnotations {
 						// Preserve upstream's wire shaping during this migration.
 						gg.Id("v").Dot("Meta").Op("=").Nil()
 						gg.Id("v").Dot("Annotations").Op("=").Nil()
